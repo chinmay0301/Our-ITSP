@@ -32,7 +32,7 @@ bar1_score, bar2_score = 0,0
 #clock and font objects
 clock = pygame.time.Clock()
 font = pygame.font.SysFont("calibri",40)
-
+flag = 0
 while True:
 
     for event in pygame.event.get():
@@ -40,13 +40,29 @@ while True:
             exit()
         if event.type == KEYDOWN:
             if event.key == K_UP:
+                flag = 0
                 bar1_move = -ai_speed
             elif event.key == K_DOWN:
+                flag = 0
+                bar1_move = ai_speed
+            elif event.key == K_LEFT:
+                flag = 1
+                bar1_move = -ai_speed
+            elif event.key == K_RIGHT:
+                flag = 1
                 bar1_move = ai_speed
         elif event.type == KEYUP:
             if event.key == K_UP:
+                flag = 0
                 bar1_move = 0.
             elif event.key == K_DOWN:
+                flag = 0
+                bar1_move = 0.
+            elif event.key == K_LEFT:
+                flag = 1
+                bar1_move = 0.
+            elif event.key == K_RIGHT:
+                flag = 1
                 bar1_move = 0.
 
     score1 = font.render(str(bar1_score), True,(255,255,255))
@@ -60,8 +76,10 @@ while True:
     screen.blit(circle,(circle_x,circle_y))
     screen.blit(score1,(250.,210.))
     screen.blit(score2,(380.,210.))
-
-    bar1_y += bar1_move
+    if flag == 0:
+        bar1_y += bar1_move
+    elif flag == 1:
+        bar1_x += bar1_move
 
 # movement of circle
     time_passed = clock.tick(30)
@@ -77,21 +95,32 @@ while True:
                 bar2_y += ai_speed
             if  bar2_y > circle_y - 42.5:
                 bar2_y -= ai_speed
+
+        if not bar2_x == circle_x:
+            if bar2_x < circle_x:
+                bar2_x += ai_speed
+            if  bar2_x > circle_x:
+                bar2_x -= ai_speed
         else:
             bar2_y == circle_y + 7.5
 
+
     if bar1_y >= 420.: bar1_y = 420.
     elif bar1_y <= 10. : bar1_y = 10.
+    if bar1_x <= 10. :bar1_x = 10.
+    elif bar1_x >= 310. :bar1_x = 310.
     if bar2_y >= 420.: bar2_y = 420.
     elif bar2_y <= 10.: bar2_y = 10.
+    if bar2_x >= 620. :bar2_x = 620.
+    elif bar2_x <= 200. :bar2_x = 200.
 #since i don't know anything about collision, ball hitting bars goes like this.
     if circle_x <= bar1_x + 10.:
         if circle_y >= bar1_y - 7.5 and circle_y <= bar1_y + 42.5:
-            circle_x = 20.
+            circle_x = bar1_x + 10.
             speed_x = -speed_x
-    if circle_x >= bar2_x - 15.:
+    if circle_x >= bar2_x - 10.:
         if circle_y >= bar2_y - 7.5 and circle_y <= bar2_y + 42.5:
-            circle_x = 605.
+            circle_x = bar2_x - 10.
             speed_x = -speed_x
     if circle_x < 5.:
         bar2_score += 1

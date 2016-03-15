@@ -33,6 +33,7 @@ bar1_score, bar2_score = 0,0
 clock = pygame.time.Clock()
 font = pygame.font.SysFont("calibri",40)
 flag = 0
+hit = 0
 while True:
 
     for event in pygame.event.get():
@@ -89,21 +90,33 @@ while True:
     circle_y += speed_y * time_sec
     ai_speed = speed_circ * time_sec
 #AI of the computer.
-    if circle_x >= 305.:
-        if not bar2_y == circle_y + 7.5:
-            if bar2_y < circle_y + 7.5:
-                bar2_y += ai_speed
-            if  bar2_y > circle_y - 42.5:
-                bar2_y -= ai_speed
+    if circle_x <= 250:
+        hit = 0
+    if circle_x > 270.:
+        if(hit == 0):
+            if not bar2_y == circle_y  + 7.5:
+                if bar2_y < circle_y+ 7.5:
+                    bar2_y += ai_speed
+                if  bar2_y > circle_y - 42.5:
+                    bar2_y -= ai_speed
 
-        if not bar2_x == circle_x:
-            if bar2_x < circle_x:
-                bar2_x += ai_speed
-            if  bar2_x > circle_x:
-                bar2_x -= ai_speed
-        else:
-            bar2_y == circle_y + 7.5
-
+            if not bar2_x == circle_x:
+                if bar2_x < circle_x:
+                    bar2_x += ai_speed
+                if  bar2_x > circle_x:
+                    bar2_x -= ai_speed
+            #else:
+            #    bar2_y == circle_y + 7.5
+    elif circle_x < 270.:
+        bar2_x += ai_speed/2
+        if bar2_y < 215:
+            bar2_y += ai_speed/2
+            if bar2_y == 215:
+                bar2_y = 215
+        elif bar2_y > 215:
+            bar2_y -= ai_speed/2
+            if bar2_y == 215:
+                bar2_y = 215
 
     if bar1_y >= 420.: bar1_y = 420.
     elif bar1_y <= 10. : bar1_y = 10.
@@ -113,15 +126,14 @@ while True:
     elif bar2_y <= 10.: bar2_y = 10.
     if bar2_x >= 620. :bar2_x = 620.
     elif bar2_x <= 200. :bar2_x = 200.
-#since i don't know anything about collision, ball hitting bars goes like this.
-    if circle_x <= bar1_x + 10.:
-        if circle_y >= bar1_y - 7.5 and circle_y <= bar1_y + 42.5:
-            circle_x = bar1_x + 10.
-            speed_x = -speed_x
-    if circle_x >= bar2_x - 10.:
-        if circle_y >= bar2_y - 7.5 and circle_y <= bar2_y + 42.5:
-            circle_x = bar2_x - 10.
-            speed_x = -speed_x
+
+    if circle_x <= bar1_x + 10 and circle_y <= bar1_y + 42.5 and circle_y >= bar1_y -7.5:
+        speed_x = -speed_x
+        circle_x = bar1_x + 10
+    if circle_x >= bar2_x -15 and circle_y <= bar2_y + 42.5 and circle_y >= bar2_y -7.5:
+        speed_x = -speed_x
+        circle_x = bar2_x - 20
+        hit = 1
     if circle_x < 5.:
         bar2_score += 1
         circle_x, circle_y = 320., 232.5

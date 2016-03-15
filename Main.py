@@ -26,13 +26,12 @@ circle.set_colorkey((0,0,0))
 bar1_x, bar2_x = 10. , 620.
 bar1_y, bar2_y = 215. , 215.
 circle_x, circle_y = 307.5, 232.5
-bar1_move, bar2_move = 0. , 0.
+bar1_movex, bar1_movey, bar2_move = 0. , 0. , 0.
 speed_x, speed_y, speed_circ = 250., 250., 250.
 bar1_score, bar2_score = 0,0
 #clock and font objects
 clock = pygame.time.Clock()
 font = pygame.font.SysFont("calibri",40)
-flag = 0
 hit = 0
 while True:
 
@@ -40,31 +39,25 @@ while True:
         if event.type == QUIT:
             exit()
         if event.type == KEYDOWN:
-            if event.key == K_UP:
-                flag = 0
-                bar1_move = -ai_speed
-            elif event.key == K_DOWN:
-                flag = 0
-                bar1_move = ai_speed
-            elif event.key == K_LEFT:
-                flag = 1
-                bar1_move = -ai_speed
-            elif event.key == K_RIGHT:
-                flag = 1
-                bar1_move = ai_speed
+            keys = pygame.key.get_pressed()
+            if keys[K_UP]:
+                bar1_movey = -ai_speed
+            if keys[K_DOWN]:
+                bar1_movey = ai_speed
+            if keys[K_LEFT]:
+                bar1_movex = -ai_speed
+            if keys[K_RIGHT]:
+                bar1_movex = ai_speed
+
         elif event.type == KEYUP:
             if event.key == K_UP:
-                flag = 0
-                bar1_move = 0.
+                bar1_movey = 0.
             elif event.key == K_DOWN:
-                flag = 0
-                bar1_move = 0.
+                bar1_movey = 0.
             elif event.key == K_LEFT:
-                flag = 1
-                bar1_move = 0.
+                bar1_movex = 0.
             elif event.key == K_RIGHT:
-                flag = 1
-                bar1_move = 0.
+                bar1_movex = 0.
 
     score1 = font.render(str(bar1_score), True,(255,255,255))
     score2 = font.render(str(bar2_score), True,(255,255,255))
@@ -77,10 +70,8 @@ while True:
     screen.blit(circle,(circle_x,circle_y))
     screen.blit(score1,(250.,210.))
     screen.blit(score2,(380.,210.))
-    if flag == 0:
-        bar1_y += bar1_move
-    elif flag == 1:
-        bar1_x += bar1_move
+    bar1_y += bar1_movey
+    bar1_x += bar1_movex
 
 # movement of circle
     time_passed = clock.tick(30)

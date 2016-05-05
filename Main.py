@@ -34,7 +34,7 @@ bar1_y, bar2_y = 215. , 215.
 goal1_x,goal2_x = 5. , 630.
 goal1_y,goal2_y = 200. , 200.
 circle_x, circle_y = 307.5, 232.5
-bar1_movex, bar1_movey, bar2_move = 0. , 0. , 0.
+bar1_movex, bar1_movey, bar2_movey,bar2_movex = 0. , 0. , 0. , 0.
 speed_x, speed_y, speed_circ = 250., 250., 250.
 bar1_score, bar2_score = 0,0
 #clock and font objects
@@ -56,6 +56,15 @@ while True:
                 bar1_movex = -ai_speed
             if keys[K_RIGHT]:
                 bar1_movex = ai_speed
+            
+            if keys[K_w]:
+                bar2_movey = -ai_speed
+            if keys[K_s]:
+                bar2_movey = ai_speed
+            if keys[K_a]:
+                bar2_movex = -ai_speed
+            if keys[K_d]:
+                bar2_movex = ai_speed
 
         elif event.type == KEYUP:
             if event.key == K_UP:
@@ -66,7 +75,16 @@ while True:
                 bar1_movex = 0.
             elif event.key == K_RIGHT:
                 bar1_movex = 0.
-
+            elif event.key == K_w:
+                bar2_movey = 0.
+            elif event.key == K_s:
+                bar2_movey = 0.
+            elif event.key == K_a:
+                bar2_movex = 0.
+            elif event.key == K_d:
+                bar2_movex = 0.
+ 
+   
     score1 = font.render(str(bar1_score), True,(255,255,255))
     score2 = font.render(str(bar2_score), True,(255,255,255))
 
@@ -84,7 +102,8 @@ while True:
     screen.blit(score2,(380.,210.))
     bar1_y += bar1_movey
     bar1_x += bar1_movex
-
+    bar2_y += bar2_movey
+    bar2_x += bar2_movex
 # movement of circle
     time_passed = clock.tick(30)
     time_sec = time_passed / 1000.0
@@ -93,33 +112,6 @@ while True:
     circle_y += speed_y * time_sec
     ai_speed = speed_circ * time_sec
 #AI of the computer.
-    if circle_x <= 250:
-        hit = 0
-    if circle_x > 270.:
-        if(hit == 0):
-            if not bar2_y == circle_y  + 7.5:
-                if bar2_y < circle_y+ 7.5:
-                    bar2_y += ai_speed
-                if  bar2_y > circle_y - 42.5:
-                    bar2_y -= ai_speed
-
-            if not bar2_x == circle_x:
-                if bar2_x < circle_x:
-                    bar2_x += ai_speed
-                if  bar2_x > circle_x:
-                    bar2_x -= ai_speed
-            #else:
-            #    bar2_y == circle_y + 7.5
-    elif circle_x < 270.:
-        bar2_x += ai_speed/2
-        if bar2_y < 215:
-            bar2_y += ai_speed/2
-            if bar2_y == 215:
-                bar2_y = 215
-        elif bar2_y > 215:
-            bar2_y -= ai_speed/2
-            if bar2_y == 215:
-                bar2_y = 215
 
     if bar1_y >= 420.: bar1_y = 420.
     elif bar1_y <= 10. : bar1_y = 10.

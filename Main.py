@@ -120,7 +120,7 @@ while True:
     if bar2_y >= 420.: bar2_y = 420.
     elif bar2_y <= 10.: bar2_y = 10.
     if bar2_x >= 620. :bar2_x = 620.
-    elif bar2_x <= 200. :bar2_x = 200.
+    elif bar2_x <= 340. :bar2_x = 340.
 
     if circle_x <= bar1_x + 10 and circle_y <= bar1_y + 42.5 and circle_y >= bar1_y -7.5:
         speed_x = -speed_x
